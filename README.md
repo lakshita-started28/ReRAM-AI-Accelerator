@@ -4,7 +4,7 @@
 
 Modern AI inference systems face a critical bottleneck: **the Von Neumann architecture separates memory from computation**, forcing continuous data movement that consumes 100-1000× more energy than actual computations. For edge devices (IoT sensors, wearables, autonomous systems), this energy overhead is unsustainable.
 
-**Solution**: Implement analog in-memory computing using Resistive RAM (ReRAM) crossbars to perform matrix-vector multiplications directly within memory arrays, eliminating data transfer overhead while achieving ** 33.3 TOPS/W efficiency — 141× better than ARM Cortex-M7 and 53× better than NVIDIA Jetson Nano.** 
+**Solution**: Implement analog in-memory computing using Resistive RAM (ReRAM) crossbars to perform matrix-vector multiplications directly within memory arrays, eliminating data transfer overhead while achieving **33.3 TOPS/W efficiency — 141× better than ARM Cortex-M7 and 53× better than NVIDIA Jetson Nano.** 
 
  **Key Technical Innovations**
  
@@ -13,13 +13,13 @@ Modern AI inference systems face a critical bottleneck: **the Von Neumann archit
 This project demonstrates practical implementation of ReRAM accelerator with focus on solving real analog/digital interface challenges that academic papers often overlook.
 **Innovation #1: PRE-ReLU Calibration Pipeline**
 
-The Problem Everyone Faces:
+**The Problem Everyone Faces:**
 
 + Standard approach: Train model → Quantize → Map to crossbar → Get 24% accuracy
 + Root cause: Using POST-ReLU activations (all positive) as calibration targets
 + Result: 52.3% of actual crossbar outputs are negative → massive mismatch
 
-Solution:
+**Solution:**
 
 + Identified that analog crossbar outputs are PRE-ReLU signals (contain negatives)
 + Calibrated weights and bias to match PRE-ReLU targets, not POST-ReLU
@@ -30,13 +30,14 @@ Solution:
 
 **Innovation #2: Hardware-Aware BatchNorm Folding with Bias Re-Calibration**
 
-The Challenge:
+**The Challenge:**
 
 + Folding BatchNorm into weights changes bias distribution (we observed +0.43 mean shift)
 + Standard folding formulas assume ideal hardware
 + Analog non-idealities (device variation, ADC quantization) break the math
 
-Approach:
+**Approach:**
+
 python# Standard folding (causes accuracy drop)
 W_fold = W * (gamma / sqrt(var + eps))
 b_fold = beta - (gamma * mean / sqrt(var + eps))
@@ -69,9 +70,9 @@ No end-to-end verification
 
 # Production-Ready Metrics:
 
-Accuracy difference: 0.0%
-Cycle-accurate latency: 23,500 cycles (from real RTL)
-Throughput: 4,255 samples/sec @ 100MHz
+**Accuracy difference:** 0.0%
+**Cycle-accurate latency:** 23,500 cycles (from real RTL)
+**Throughput:** 4,255 samples/sec @ 100MHz
 
 **Innovation #4: Systematic ADC Saturation Diagnosis & Fix**
 
@@ -85,7 +86,8 @@ Root Cause: No activation-aware scaling before weight mapping
 Fix: alpha = max(calibration_batch @ weights) / ADC_MAX
   ↓ [Result]
 Final: 97.7% accuracy
-Why This Matters: A complex system spanning ML algorithms, analog crossbar physics, and digital hardware interfaces was debugged. 
+
+**Why This Matters:** A complex system spanning ML algorithms, analog crossbar physics, and digital hardware interfaces was debugged. 
 
 # 💰 Cost-Effectiveness Analysis
 
@@ -107,17 +109,25 @@ Why This Matters: A complex system spanning ML algorithms, analog crossbar physi
 # Technical Skills
 
 ✅ Hardware-Software Co-Design — Full-stack from algorithm to silicon
+
 ✅ Analog Circuit Understanding — ReRAM device physics, conductance mapping
+
 ✅ Digital Design — Verilog RTL, FSM design, timing constraints
+
 ✅ Machine Learning — Quantization-aware training, hardware-aware optimization
+
 ✅ System Integration — Python-C++-Verilog interfacing via Verilator
+
 ✅ Debugging Methodology — Systematic root-cause analysis across domains
 
 # Engineering Mindset
 
 ✅ Problem-Solving — Fixed accuracy from 24% → 98% through root-cause analysis
+
 ✅ Cost-Consciousness — Delivered $108K equivalent project with $0 budget
+
 ✅ Trade-Off Analysis — Balanced precision, energy, area, and latency
+
 ✅ Production Validation — 100% SW-HW match proves functional correctness
 
 # Key Achievements
@@ -130,23 +140,10 @@ Why This Matters: A complex system spanning ML algorithms, analog crossbar physi
 
 # 🔧 Hardware-Software Co-Design Flow
 
-Python (ML Model)
-      │
-      ├─► Normalize inputs (mean=0, std=1)
-      ├─► Fold BatchNorm into weights
-      ├─► Map weights → Differential conductance (G_pos, G_neg)
-      │
-      ▼
-Verilog Controller (FSM)
-      │
-      ├─► Load inputs (784 pixels) → DAC conversion
-      ├─► Trigger ReRAM crossbar (Python callback)
-      ├─► ADC conversion → Output neurons (256)
-      │
-      ▼
-Python (Rest of Network)
-      │
-      └─► fc2, bn2, relu2 → fc3 → Softmax → Prediction
+<img width="561" height="378" alt="image" src="https://github.com/user-attachments/assets/de3ddbd7-9431-4308-b1af-ea18acb32e52" />
+
+
+
 
 # Technology Stack
 
@@ -224,29 +221,14 @@ Achieved +3.5% accuracy improvement (94.5% → 98.0%)
 
 # 📁 Repository Structure
 
-reram_rtl/
-├── rtl/                          # Verilog RTL designs
-│   ├── reram_controller.v        # FSM controller (6 states)
-│   ├── dac_10bit.v               # 10-bit Digital-to-Analog Converter
-│   └── adc_12bit.v               # 12-bit Analog-to-Digital Converter
-├── testbench/
-│   └── tb_reram_controller.v     # Testbench with VCD generation
-├── cosim/                        # Co-simulation framework
-│   ├── verilator_wrapper.cpp     # C++ interface for Verilator
-│   ├── build.sh                  # Compilation script
-│   ├── reram_hw.py               # Python hardware wrapper
-│   └── run_cosim.py              # End-to-end validation (1000 samples)
-├── model/                        # ML training & ReRAM modeling
-│   ├── train_model.py            # RobustNN training (784→256→128→10)
-│   ├── reram_crossbar.py         # ReRAM physics simulation
-│   └── model_weights.pth         # Trained model checkpoint
-├── results/                      # Outputs & analysis
-│   ├── cosim_results.npz         # Numerical results
-│   ├── phase6_benchmarks.png     # Performance comparison plots
-│   └── waveforms/                # GTKWave VCD files
-└── docs/
-    ├── architecture.md           # System design documentation
-    └── phase_reports.md          # Phase-wise progress logs
+<img width="621" height="504" alt="image" src="https://github.com/user-attachments/assets/a9901c74-5bd4-4bf1-9fb5-590a7c5e7e3b" />
+
+
+
+
+
+
+
 
 # Quick Start
 
