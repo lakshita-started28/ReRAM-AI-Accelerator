@@ -42,6 +42,7 @@ Why This Matters: a fundamental analog/digital interface mismatch was diagonised
 <img width="544" height="301" alt="image" src="https://github.com/user-attachments/assets/8c8a4989-d751-4a30-b18d-00eaa770947a" />
 
 
+
 **Result:** Achieved 98.0% accuracy (actually better than ideal 97.6% software model!)
 
 **Innovation #3: Production-Grade Co-Simulation Validation Framework**
@@ -80,7 +81,9 @@ No end-to-end verification
 
 # Zero-Budget Engineering Achievement
 
+
 <img width="672" height="275" alt="image" src="https://github.com/user-attachments/assets/3edb243a-3022-4a7f-9dd8-a9051b3b01fe" />
+
 
 
 **Architecture Cost Advantages**
@@ -217,6 +220,7 @@ No end-to-end verification
 
 
 
+
 # Quick Start
 
 **Prerequisites**
@@ -224,9 +228,11 @@ No end-to-end verification
 <img width="431" height="105" alt="image" src="https://github.com/user-attachments/assets/3d9bbf2a-2b58-4aac-b16f-d49c2863bdbc" />
 
 
+
 **2. Run Verilog simulation**
 
 <img width="495" height="363" alt="image" src="https://github.com/user-attachments/assets/f5da79ef-f491-4dcf-8fd3-138933427053" />
+
 
 
 
