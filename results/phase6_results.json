@@ -1,0 +1,60 @@
+{
+  "software_accuracy": 97.7,
+  "hardware_accuracy": 75.3,
+  "match_rate": 76.3,
+  "metrics": {
+    "latency_ms": 0.5,
+    "throughput_fps": 2000.0,
+    "energy_per_sample_uj": 17.5,
+    "energy_per_mac_pj": 87.19308035714286,
+    "tops_w": 0.0229376,
+    "power_w": 0.035
+  },
+  "benchmarks": {
+    "ARM_Cortex_M7": {
+      "name": "ARM Cortex-M7 @ 216MHz",
+      "frequency_mhz": 216,
+      "power_mw": 130,
+      "energy_per_mac_pj": 8.5,
+      "tops_w": 0.05,
+      "source": "ARM Cortex-M7 Technical Reference Manual",
+      "notes": "Widely used in IoT/embedded (Arduino Portenta, STM32H7)"
+    },
+    "NVIDIA_Jetson_Nano": {
+      "name": "NVIDIA Jetson Nano",
+      "frequency_mhz": 921,
+      "power_mw": 5000,
+      "energy_per_mac_pj": 3.2,
+      "tops_w": 0.0944,
+      "source": "NVIDIA Jetson Nano Developer Kit User Guide",
+      "notes": "Entry-level edge AI accelerator"
+    },
+    "Intel_Movidius_Myriad_X": {
+      "name": "Intel Movidius Myriad X",
+      "frequency_mhz": 700,
+      "power_mw": 1500,
+      "energy_per_mac_pj": 0.5,
+      "tops_w": 2.0,
+      "source": "Intel Movidius Myriad X Product Brief",
+      "notes": "Dedicated vision processing unit (VPU)"
+    },
+    "Google_Edge_TPU": {
+      "name": "Google Coral Edge TPU",
+      "frequency_mhz": 500,
+      "power_mw": 2000,
+      "energy_per_mac_pj": 0.25,
+      "tops_w": 2.0,
+      "source": "Google Coral documentation",
+      "notes": "INT8 quantized inference accelerator"
+    },
+    "ReRAM_Ours_Actual": {
+      "name": "ReRAM Accelerator (This Work)",
+      "frequency_mhz": 100,
+      "power_mw": 35,
+      "energy_per_mac_pj": 87.19308035714286,
+      "tops_w": 0.0229376,
+      "source": "Measured from Verilator simulation + ReRAM physics",
+      "notes": "Layer 1 only (256x784 crossbar)"
+    }
+  }
+}
