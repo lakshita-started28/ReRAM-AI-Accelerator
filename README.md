@@ -126,31 +126,7 @@ Why This Matters: A complex system spanning ML algorithms, analog crossbar physi
 
 
 # Architecture Overview
-┌─────────────────────────────────────────────────────────────┐
-│                    ReRAM AI Accelerator                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                               │
-│  ┌──────────┐  10-bit   ┌─────────────────┐  12-bit        │
-│  │  Input   ├─────────► │   DAC Module    ├───────┐         │
-│  │  Buffer  │           └─────────────────┘       │         │
-│  └──────────┘                                     ▼         │
-│                                         ┌──────────────────┐ │
-│                                         │  ReRAM Crossbar  │ │
-│  ┌──────────┐                          │   (Simulated)    │ │
-│  │   FSM    │◄─────────────────────────┤  G_pos | G_neg   │ │
-│  │Controller│    Analog Currents       │   Differential   │ │
-│  └──────────┘                          └──────────┬───────┘ │
-│       │                                           │         │
-│       │                                  ┌────────▼───────┐ │
-│       │                                  │  ADC Module    │ │
-│       │                                  │   (12-bit)     │ │
-│       │                                  └────────┬───────┘ │
-│       ▼                                           │         │
-│  ┌──────────┐                                    │         │
-│  │  Output  │◄───────────────────────────────────┘         │
-│  │  Buffer  │                                               │
-│  └──────────┘                                               │
-└─────────────────────────────────────────────────────────────┘
+<img width="645" height="517" alt="image" src="https://github.com/user-attachments/assets/b801cc15-08b0-4f71-a713-10403b99f110" />
 
 # 🔧 Hardware-Software Co-Design Flow
 
@@ -174,13 +150,18 @@ Python (Rest of Network)
 
 # Technology Stack
 
+
 <img width="648" height="173" alt="image" src="https://github.com/user-attachments/assets/8c92bf82-f636-43f4-a886-34468807647d" />
+
 
 
 # 📊 Benchmark Comparison
 
 **Energy Efficiency (Lower is Better)**
+
 <img width="634" height="174" alt="image" src="https://github.com/user-attachments/assets/0ce47f7c-14e1-40d8-ac9f-21928b0b33e5" />
+
+
 
 
 **Key Insight: ReRAM achieves 141× better efficiency than ARM Cortex-M7 and 4× better than Google Edge TPU due to eliminated data movement.**
@@ -188,19 +169,36 @@ Python (Rest of Network)
 # 🚧 Phase-Wise Development & Issues Solved
 
 **Phase 1-2: Software Setup & ReRAM Modeling**
+
 <img width="642" height="129" alt="image" src="https://github.com/user-attachments/assets/c3a44efa-7814-47dc-b3a1-ec0029f25c2f" />
 
+
+
 **Phase 3: AI Training & Mapping**
+
 <img width="638" height="187" alt="image" src="https://github.com/user-attachments/assets/f01d5593-ee93-4052-9610-949f7712b9dd" />
 
+
+
 **Phase 4: RTL Design**
+
 <img width="651" height="140" alt="image" src="https://github.com/user-attachments/assets/9d0a63ed-3a6c-43c8-b2c2-638781d58663" />
 
+
+
 **Phase 5: Co-Simulation**
+
+
 <img width="640" height="301" alt="image" src="https://github.com/user-attachments/assets/717f44dc-3753-41d0-b299-01458fd1e8c9" />
 
+
+
 **Phase 6: Evaluation & Reporting**
+
+
 <img width="644" height="196" alt="image" src="https://github.com/user-attachments/assets/b7a52b82-174a-421e-8e97-98aa9ce868d7" />
+
+
 
 
 # 🔬 Technical Innovations
