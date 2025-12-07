@@ -1,0 +1,13 @@
+# DESCRIPTION: Verilator output: Timestamp data for --skip-identical.  Delete at will.
+C "--cc ../rtl/reram_controller_verilator.v --top-module reram_controller_verilator -Mdir obj_dir -O3 --x-assign fast --x-initial fast -CFLAGS -fPIC -LDFLAGS -shared"
+S      3650 562949953454360  1765015087   598384500  1765015087   598384500 "../rtl/reram_controller_verilator.v"
+S   7892640    55300  1764856330   993156944  1598506306           0 "/usr/bin/verilator_bin"
+T     11702 18577348462936357  1765032450   100697100  1765032450   100697100 "obj_dir/Vreram_controller_verilator.cpp"
+T      3812 18577348462936355  1765032450   100697100  1765032450   100697100 "obj_dir/Vreram_controller_verilator.h"
+T      1552 18577348462936359  1765032450   118878500  1765032450   118878500 "obj_dir/Vreram_controller_verilator.mk"
+T      2904 18577348462936356  1765032450   100697100  1765032450   100697100 "obj_dir/Vreram_controller_verilator__Slow.cpp"
+T       644 18858823439647009  1765032450    88537400  1765032450    88537400 "obj_dir/Vreram_controller_verilator__Syms.cpp"
+T       928 18577348462936354  1765032450    88537400  1765032450    88537400 "obj_dir/Vreram_controller_verilator__Syms.h"
+T       429 17732923532804392  1765032450   118878500  1765032450   118878500 "obj_dir/Vreram_controller_verilator__ver.d"
+T         0        0  1765032450   592352600  1765032450   592352600 "obj_dir/Vreram_controller_verilator__verFiles.dat"
+T      1630 18577348462936358  1765032450   118878500  1765032450   118878500 "obj_dir/Vreram_controller_verilator_classes.mk"
