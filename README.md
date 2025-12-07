@@ -11,6 +11,7 @@ Modern AI inference systems face a critical bottleneck: **the Von Neumann archit
 **What Makes This Project Unique**
 
 This project demonstrates practical implementation of ReRAM accelerator with focus on solving real analog/digital interface challenges that academic papers often overlook.
+
 **Innovation #1: PRE-ReLU Calibration Pipeline**
 
 **The Problem Everyone Faces:**
@@ -26,7 +27,7 @@ This project demonstrates practical implementation of ReRAM accelerator with foc
 + Applied ReLU activation digitally after ADC conversion
 + Result: 97.7% accuracy vs 24% with standard approach
 
-**Why This Matters: a fundamental analog/digital interface mismatch was diagonised through systematic debugging.**
+Why This Matters: a fundamental analog/digital interface mismatch was diagonised through systematic debugging.
 
 **Innovation #2: Hardware-Aware BatchNorm Folding with Bias Re-Calibration**
 
@@ -38,29 +39,20 @@ This project demonstrates practical implementation of ReRAM accelerator with foc
 
 **Approach:**
 
-python# Standard folding (causes accuracy drop)
-W_fold = W * (gamma / sqrt(var + eps))
-b_fold = beta - (gamma * mean / sqrt(var + eps))
+<img width="544" height="301" alt="image" src="https://github.com/user-attachments/assets/8c8a4989-d751-4a30-b18d-00eaa770947a" />
 
-# innovation: Re-calibrate bias using actual hardware outputs
 
-Y_hardware = crossbar_inference(X_calibration)
-b_calibrated = solve_least_squares(Y_hardware, Y_target)
+**Result:** Achieved 98.0% accuracy (actually better than ideal 97.6% software model!)
 
-# Then apply hardware-aware fine-tuning
+**Innovation #3: Production-Grade Co-Simulation Validation Framework**
 
-for iter in range(400):
-    loss = MSE(crossbar_inference(X), Y_target)
-    optimizer.step()
-Result: Achieved 98.0% accuracy (actually better than ideal 97.6% software model!)
-Innovation #3: Production-Grade Co-Simulation Validation Framework
 What Most Projects Do:
 
 Pure Python simulation (no hardware validation)
 OR Pure Verilog testbench (uses test vectors, not real model)
 No end-to-end verification
 
-# Framework:
+**Framework:**
 
 + PyTorch trains model (97.7% validation accuracy)
 + Verilog RTL implements controller + ADC/DAC
@@ -68,7 +60,7 @@ No end-to-end verification
 + Python calls Verilog for each inference via ctypes
 + Validated on 1000 samples → 100% SW-HW match rate
 
-# Production-Ready Metrics:
+**Production-Ready Metrics:**
 
 **Accuracy difference:** 0.0%
 **Cycle-accurate latency:** 23,500 cycles (from real RTL)
@@ -76,16 +68,11 @@ No end-to-end verification
 
 **Innovation #4: Systematic ADC Saturation Diagnosis & Fix**
 
-Debug Process:
-Initial State: 5% accuracy (random guessing)
-  ↓ [Print crossbar outputs]
-Observation: Output scale = 3651.35 (ADC range is 4096)
-  ↓ [Analyze calibration]
-Root Cause: No activation-aware scaling before weight mapping
-  ↓ [Implement per-layer scaling]
-Fix: alpha = max(calibration_batch @ weights) / ADC_MAX
-  ↓ [Result]
-Final: 97.7% accuracy
+
+<img width="534" height="192" alt="image" src="https://github.com/user-attachments/assets/3755f208-ae7b-4e9c-860f-b1110c2860bf" />
+
+
+
 
 **Why This Matters:** A complex system spanning ML algorithms, analog crossbar physics, and digital hardware interfaces was debugged. 
 
@@ -96,7 +83,7 @@ Final: 97.7% accuracy
 <img width="672" height="275" alt="image" src="https://github.com/user-attachments/assets/3edb243a-3022-4a7f-9dd8-a9051b3b01fe" />
 
 
-# Architecture Cost Advantages
+**Architecture Cost Advantages**
 
 + 35× denser memory: ReRAM vs SRAM → lower silicon area cost
 + No external DRAM: $3-5 per chip savings + simpler PCB (2-layer vs 6-layer)
@@ -202,21 +189,21 @@ Final: 97.7% accuracy
 
 **1. Activation-Aware Weight Scaling**
 
-python# Prevent ADC saturation
-calib_max = calibration_batch @ weights.T
-scale = calib_max / ADC_MAX
-weights_scaled = weights / scale
+<img width="359" height="134" alt="image" src="https://github.com/user-attachments/assets/653d0858-8aa2-48cc-a18b-587e2d5aba7b" />
+
+
+
 
 **2. True Differential Conductance Mapping**
 
-pythonG_pos = G_min + (G_max - G_min) * relu(W) / W_max
-G_neg = G_min + (G_max - G_min) * relu(-W) / W_max
-# Conductance range: 5-50 μS (realistic for ReRAM devices)
+
+<img width="520" height="107" alt="image" src="https://github.com/user-attachments/assets/7a36255a-001e-4bfd-a363-398dcc142bc5" />
+
 
 **3. Hardware-Aware Fine-Tuning**
 
-Fine-tuned model for 400 iterations with ReRAM non-idealities in the loop
-Achieved +3.5% accuracy improvement (94.5% → 98.0%)
++ Fine-tuned model for 400 iterations with ReRAM non-idealities in the loop
++ Achieved +3.5% accuracy improvement (94.5% → 98.0%)
 
 
 # 📁 Repository Structure
@@ -234,50 +221,37 @@ Achieved +3.5% accuracy improvement (94.5% → 98.0%)
 
 **Prerequisites**
 
-bash# Install required tools
-pip install torch torchvision numpy matplotlib
-sudo apt install iverilog gtkwave verilator
-Run Complete Pipeline
-bash# 1. Train model with hardware-aware fine-tuning
-python model/train_model.py
+<img width="431" height="105" alt="image" src="https://github.com/user-attachments/assets/3d9bbf2a-2b58-4aac-b16f-d49c2863bdbc" />
+
 
 **2. Run Verilog simulation**
 
-cd testbench
-iverilog -o sim reram_controller.v tb_reram_controller.v
-vvp sim
+<img width="495" height="363" alt="image" src="https://github.com/user-attachments/assets/f5da79ef-f491-4dcf-8fd3-138933427053" />
 
-**3. View waveforms**
-gtkwave sim/reram_controller.vcd
 
-**4. Run co-simulation (1000 samples)**
-
-cd cosim
-bash build.sh
-python run_cosim.py --samples 1000
 
 **📈 Results Summary**
 
-Accuracy Validation (n=1000 samples)
+**Accuracy Validation (n=1000 samples)**
 
-Software-only: 97.7%
-Hardware-accelerated: 97.7%
-SW-HW Match Rate: 100%
-Accuracy Difference: 0.0%
++ **Software-only:** 97.7%
++ **Hardware-accelerated:** 97.7%
++ **SW-HW Match Rate:** 100%
++ **Accuracy Difference:** 0.0%
 
-Hardware Performance (from RTL simulation)
+**Hardware Performance (from RTL simulation)**
 
-Average Cycles/Sample: 23,500 cycles
-Latency @ 100MHz: 0.235 ms
-Throughput: 4,255 samples/sec
++ **Average Cycles/Sample:** 23,500 cycles
++ **Latency @ 100MHz:** 0.235 ms
++ **Throughput:** 4,255 samples/sec
 
-Architecture Energy Estimates
-(Based on published ReRAM research: Nature Electronics 2020, IEEE JSSC 2021)
+**Architecture Energy Estimates
+(Based on published ReRAM research: Nature Electronics 2020, IEEE JSSC 2021)**
 
-Energy/MAC: 0.060 pJ
-Energy/Sample: 0.01 μJ
-Estimated Power: 0.1 mW
-Efficiency: 33.3 TOPS/W
++ **Energy/MAC:** 0.060 pJ
++ **Energy/Sample:** 0.01 μJ
++ **Estimated Power:** 0.1 mW
++ **Efficiency:** 33.3 TOPS/W
 
 
 # Skills Demonstrated
